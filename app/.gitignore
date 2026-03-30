@@ -1,0 +1,32 @@
+# Environment variables
+.env
+dev.env
+*.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+venv/
+.env/
+.venv/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Azurite / local storage
+__azurite_db_*.json
+azurite_db_*.json
+
+# JSON databases / local data
+*.db.json
