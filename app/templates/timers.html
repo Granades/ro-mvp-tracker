@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Timers{% endblock %}
+
+{% block content %}
+    <section class="page-hero">
+        <div>
+            <p class="eyebrow">Seguimiento</p>
+            <h1 class="page-title">Timers activos</h1>
+            <p class="page-description">
+                Selecciona un MVP para ver el mapa, la tumba marcada y registrar una nueva kill.
+            </p>
+        </div>
+
+        <a href="/" class="secondary-link">Volver al inicio</a>
+    </section>
+
+    {% if timers %}
+        <div class="timer-grid">
+            {% for timer in timers %}
+                <a href="/mvp/{{ timer.mvp_id }}" class="timer-link-card">
+                    <article class="timer-visual-card surface">
+                        <div class="timer-visual-top">
+                            <img src="{{ timer.sprite }}" alt="{{ timer.mvp_name }}" class="timer-sprite">
+                        </div>
+
+                        <div class="timer-visual-body">
+                            <h2 class="timer-name centered">{{ timer.mvp_name }}</h2>
+                            <p class="timer-map centered">{{ timer.map }}</p>
+
+                            <div class="mini-countdown">
+                                <span class="mini-countdown-label">Respawn mínimo</span>
+                                <span class="mini-countdown-value countdown-min"
+                                      data-datetime="{{ timer.next_spawn_min.isoformat() }}">
+                                    calculando...
+                                </span>
+                            </div>
+
+                            <div class="mini-countdown">
+                                <span class="mini-countdown-label">Respawn máximo</span>
+                                <span class="mini-countdown-value countdown-max"
+                                      data-datetime="{{ timer.next_spawn_max.isoformat() }}">
+                                    calculando...
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+                </a>
+            {% endfor %}
+        </div>
+    {% else %}
+        <section class="empty-state surface">
+            <h2>No hay timers activos</h2>
+            <p>Todavía no hay kills registradas activas.</p>
+            <a href="/" class="btn btn-primary">Ir al inicio</a>
+        </section>
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/js/timers.js"></script>
+{% endblock %}

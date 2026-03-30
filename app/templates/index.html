@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+    <section class="page-hero">
+        <div>
+            <p class="eyebrow">Panel principal</p>
+            <h1 class="page-title">Lista de MVPs</h1>
+            <p class="page-description">
+                Elige un MVP para registrar tumbas y controlar respawns.
+            </p>
+        </div>
+
+        <a href="/timers" class="primary-link">Ver timers activos</a>
+    </section>
+
+    <section class="card surface">
+        <div class="section-header">
+            <div>
+                <h2 class="section-title">MVPs disponibles</h2>
+                <p class="section-subtitle">Sprites, mapas y tiempos base</p>
+            </div>
+        </div>
+
+        <div class="mvp-grid">
+            {% for mvp in mvps %}
+                <a href="/mvp/{{ mvp.id }}" class="mvp-card-link">
+                    <article class="mvp-card">
+                        <div class="mvp-card-top">
+                            <img src="{{ mvp.sprite }}" alt="{{ mvp.name }}" class="mvp-sprite">
+                        </div>
+
+                        <div class="mvp-card-body">
+                            <h3 class="mvp-name">{{ mvp.name }}</h3>
+                            <p class="mvp-map">{{ mvp.map }}</p>
+
+                            <div class="mvp-meta">
+                                <span class="meta-pill">
+                                    Respawn {{ mvp.respawn_min }}{% if mvp.respawn_min != mvp.respawn_max %}-{{ mvp.respawn_max }}{% endif %} min
+                                </span>
+                            </div>
+                        </div>
+                    </article>
+                </a>
+            {% endfor %}
+        </div>
+    </section>
+{% endblock %}

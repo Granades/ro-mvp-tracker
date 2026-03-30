@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}{{ mvp.name }}{% endblock %}
+
+{% block content %}
+    <section class="page-hero">
+        <div>
+            <p class="eyebrow">Seguimiento de MVP</p>
+            <h1 class="page-title">{{ mvp.name }}</h1>
+            <p class="page-description">
+                Marca la tumba en el mapa y guardar la kill para registarlo.
+            </p>
+        </div>
+
+        <a href="/timers" class="secondary-link">Volver a timers</a>
+    </section>
+
+    <section class="surface mvp-top-card">
+        <div class="mvp-top-left">
+    <p class="section-subtitle">Timer actual</p>
+
+    {% if latest_spawn %}
+        <div class="countdown-box big-countdown">
+            <span class="countdown-label">Respawn comienza en</span>
+            <span class="countdown-value countdown-min"
+                  data-datetime="{{ latest_spawn.next_spawn_min.isoformat() }}">
+                calculando...
+            </span>
+        </div>
+
+        <div class="countdown-box big-countdown">
+            <span class="countdown-label">Respawn termina en</span>
+            <span class="countdown-value countdown-max"
+                  data-datetime="{{ latest_spawn.next_spawn_max.isoformat() }}">
+                calculando...
+            </span>
+        </div>
+    {% else %}
+        <div class="empty-inline">
+            <p>No hay timer activo para este MVP.</p>
+        </div>
+    {% endif %}
+
+    <!-- 🔥 NUEVO: botón debajo del timer -->
+    <form method="POST" action="/mvp/{{ mvp.id }}/report" class="hidden-coords-form">
+    <input type="hidden" name="x" id="x" required>
+    <input type="hidden" name="y" id="y" required>
+
+    <button type="submit" class="btn btn-primary btn-large full-width" id="save-kill-btn" disabled>
+        Guardar kill
+    </button>
+</form>
+</div>
+
+        <div class="mvp-top-center">
+            <p class="section-subtitle">Mapa</p>
+
+            <div
+                class="map-wrapper detail-map-wrapper"
+                id="map-wrapper"
+                {% if latest_spawn %}
+                    data-last-x="{{ latest_spawn.tomb.x }}"
+                    data-last-y="{{ latest_spawn.tomb.y }}"
+                {% endif %}
+            >
+                <img
+                    id="map-image"
+                    src="{{ mvp.map_image }}"
+                    alt="{{ mvp.map }}"
+                    class="map-image"
+                >
+                <div id="saved-marker" class="map-marker saved-marker"></div>
+                <div id="map-marker" class="map-marker"></div>
+            </div>
+
+            <p id="coords-text" class="helper-text helper-text-strong">
+                Haz click en el mapa para marcar la tumba.
+            </p>
+        </div>
+
+        <div class="mvp-top-right">
+            <p class="section-subtitle">MVP</p>
+
+            <div class="mvp-side-card">
+                <img class="detail-sprite large-sprite" src="{{ mvp.sprite }}" alt="{{ mvp.name }}">
+                <h2 class="detail-name">{{ mvp.name }}</h2>
+                <p class="detail-map">{{ mvp.map }}</p>
+
+                <div class="detail-pills">
+                    <span class="meta-pill">Min: {{ mvp.respawn_min }} min</span>
+                    <span class="meta-pill">Max: {{ mvp.respawn_max }} min</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="/static/js/map_click.js"></script>
+    <script src="/static/js/timers.js"></script>
+{% endblock %}
